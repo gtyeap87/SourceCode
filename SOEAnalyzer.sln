@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOEAnalyzer", "SOEAnalyzer\SOEAnalyzer.csproj", "{979E17BF-FDB9-4081-A167-4D768DC902E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOEAnalyzer.Tests", "SOEAnalyzer.Tests\SOEAnalyzer.Tests.csproj", "{9B291E15-D483-4F5A-8690-97D753AC2EEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{979E17BF-FDB9-4081-A167-4D768DC902E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979E17BF-FDB9-4081-A167-4D768DC902E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979E17BF-FDB9-4081-A167-4D768DC902E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979E17BF-FDB9-4081-A167-4D768DC902E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B291E15-D483-4F5A-8690-97D753AC2EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B291E15-D483-4F5A-8690-97D753AC2EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B291E15-D483-4F5A-8690-97D753AC2EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B291E15-D483-4F5A-8690-97D753AC2EEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25F56494-F8AC-4CCE-9DF1-C0822FDBD379}
+	EndGlobalSection
+EndGlobal

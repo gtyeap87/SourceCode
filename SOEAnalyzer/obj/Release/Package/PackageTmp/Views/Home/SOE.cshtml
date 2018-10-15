@@ -1,0 +1,222 @@
+﻿@model IEnumerable<SOEAnalyzer.Models.Model>
+
+@{
+    ViewBag.Title = "SOE Analyzer";
+    ViewBag.Keyword = "Keywords";
+    ViewBag.Occurence = "Occurence";
+    ViewBag.MetaOccurence = "MetaOccr";
+}
+
+<h2>View</h2>
+
+
+<form id="form">
+    <div>
+        <input type="text" id="txtSearchBox" />
+        <input type="submit" id="btnAnalyze" value="Analyze" />
+        <input type="checkbox" id="chkOnAnalyze" checked />
+        <label>Analyzer On</label>
+    </div>
+    <table class="table">
+        <tr>
+            <th hidden>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Keyword)*@
+                @*@Html.ActionLink("Keyword v", "Sort",
+                    new
+                    {
+                    SortOrder = ViewBag.Keyword
+                    })*@
+                <a href="#" id="@ViewBag.Keyword">Keyword<span class="glyphicon glyphicon-arrow-up" /></a>
+
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Occurence)*@
+                @*@Html.ActionLink("Occurence v", "Sort",
+                    new
+                    {
+                        SortOrder = ViewBag.Occurence
+                    })*@
+                <a href="#" id="@ViewBag.Occurence">Occurence<span class="" /></a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.MetaOccurence)*@
+                @*@Html.ActionLink("MetaOccurence v", "Sort",
+                    new
+                    {
+                    SortOrder = ViewBag.MetaOccurence
+                    })*@
+                <a href="#" id="@ViewBag.MetaOccurence">MetaOccurence<span class="" /></a>
+            </th>
+            <th></th>
+        </tr>
+
+
+        @foreach (var item in Model)
+        {
+            <tr data-id="@item.Id" class="data">
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Keyword)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Occurence)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetaOccurence)
+                </td>
+            </tr>
+        }
+
+    </table>
+</form>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            
+            $('th a').on('click', function (e) {
+                debugger
+                var $result;
+                var arry = [];
+                $.each($('table .data'), function (i, v) {
+
+                    j = i + 1;
+
+                    var source2 = $('tr[data-id="' + j + '"]').children();
+                    var tableData2 = source2.map(function () {
+                        return $(this).text().trim();
+                    }).get();
+
+                    obj =
+                        {
+                            Id: Number(tableData2[0]),
+                            Keyword: tableData2[1],
+                            Occurence: Number(tableData2[2]),
+                            MetaOccurence: Number(tableData2[3])
+                        }
+
+
+                    arry[i] = obj;
+                })
+
+                var data = {
+                    List: arry,
+                    SortOrder: this.text
+                };
+
+                $.ajax({
+                    url: "/Home/Sort",
+                    data: data,
+                    async: false,
+                    success: function (result) {
+                        debugger
+
+                        $("tbody").empty();
+                        var str = result.Html;
+                        $("tbody").append(str);
+
+                        $result = result.SelectedField;
+                        $.each($('tbody a'), function (i, v) {
+                            debugger
+
+                            var isfound = v.textContent.indexOf(result.SelectedField);
+                            if (isfound > -1) {
+                                var type = result.SortType == "DESC" ?
+                                    "glyphicon glyphicon-arrow-down" : "glyphicon glyphicon-arrow-up"
+                                $(v.children).addClass(type);
+                            }
+                        })
+
+                    },
+                    error: function (result, status, error) {
+                        debugger
+                        alert(error);
+                    },
+                    type: 'POST'
+                });
+            })
+
+            $('#btnAnalyze').on('click', function () {
+
+                debugger
+                var arry = [];
+                var searchText = $('#txtSearchBox').val();
+                if (searchText !== '') {
+
+                    if ($('#chkOnAnalyze').prop('checked') == false) {
+                        alert('Analyzer has been turned off');
+                        return
+                    }
+
+                    $.each($('table .data'), function (i, v) {
+
+                        j = i + 1;
+
+                        var source = $('tr[data-id="' + j + '"]').children();
+                        var tableData = source.map(function () {
+                            return $(this).text().trim();
+                        }).get();
+
+                        obj =
+                            {
+                                Id: Number(tableData[0]),
+                                Keyword: tableData[1],
+                                Occurence: Number(tableData[2]),
+                                MetaOccurence: Number(tableData[3])
+                            }
+
+
+                        arry[i] = obj;
+                    })
+
+                    /* Get meta */
+                    var meta = $('meta[name="keywords"]')[0].content;
+                    console.log(meta);
+
+                    var data = {
+                        Models: arry,
+                        SearchText: searchText,
+                        Meta: meta
+                    };
+
+
+                    $.ajax({
+                        url: "/Home/Analyze",
+                        data: data,
+                        async: false,
+                        success: function (result) {
+                            debugger
+
+                            //$('html').html(result);
+                            jQuery("body").html(result);
+                            //$.each(result, function (i, v) {
+
+                            //})
+
+                            //$("tbody").empty();
+
+
+                        },
+                        error: function (result, status, error) {
+                            debugger
+                            alert(error);
+                        },
+                        type: 'POST'
+                    });
+
+                }
+                else {
+                    alert('Please key in something');
+                }
+            });
+        });
+    </script>
+}
